@@ -1,0 +1,14 @@
+export const LIGHT_MODE = 'light';
+export const DARK_MODE = 'dark';
+export const LIGHT_MARK = LIGHT_MODE;
+export const DARK_MARK = DARK_MODE;
+export const MAIN_MARK = 'main';
+export const DEFAULT_COLOR_STATUS = 'default';
+export const LINK_COLOR_STATUS = 'link';
+export const VISITED_COLOR_STATUS = 'visited';
+export const HOVER_COLOR_STATUS = 'hover';
+export const ACTICE_COLOR_STATUS = 'active';
+export const MOUNTED_THEME_STATUS = 'mounted';
+export const UNMOUNTED_THEME_STATUS = 'unmounted';
+export const NOT_MOUNTED_THEME_STATUS = 'notMounted';
+export const DEFAULT_STYLE_MARK_LIST = [LIGHT_MARK, DARK_MARK, MAIN_MARK];
