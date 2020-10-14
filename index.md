@@ -1,37 +1,64 @@
-## Welcome to GitHub Pages
+# 主题
 
-You can use the [editor on GitHub](https://github.com/Yfill/Theme/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+## 快速上手
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### 一、引入theme，执行run
 
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```shell
+yarn add @yfill-series/theme
+npm install @yfill-series/theme --save
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+```js
+import Theme from "@yfill-series/theme";
+Theme.run();
+```
 
-### Jekyll Themes
+```html
+<script src="https://unpkg.com/@yfill-series/theme"></script>
+<script>
+  Theme.run();
+</script>
+```
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Yfill/Theme/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+### 二、在 tag 上设置 theme 属性
 
-### Support or Contact
+    background-color-[?main]-[-10-10]-[?a]-[?hover]
+    font-color-[?main]-[-10-10]-[?a]-[?hover]
+    border-color-[?main]-[-10-10]-[?a]-[?hover]
+    box-shadow-[?main]-[0-2]-[?hover]
+    font-size-[12-52]-[?hover]
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+### 三、代码示例
+
+```html
+<div
+  background-color-0
+  font-color-0
+  font-color-main-0-a-hover
+  font-size-18-hover
+>
+  <style>
+    .item {
+      line-height: 40px;
+      border-width: 0;
+      border-style: solid;
+      transition: all 0.2s;
+      padding-left: 10px;
+      border-radius: 6px;
+    }
+  </style>
+  <div
+    class="item"
+    background-color-1-hover
+    border-color-4-a
+    box-shadow-2
+    box-shadow-main-0-hover
+    border-color-1-hover
+  >
+    内容
+  </div>
+</div>
+<div class="item" font-size-12>字体12</div>
+<div class="item" font-size-52>字体52</div>
+```
