@@ -1,35 +1,45 @@
-# 主题
+# [Theme](https://yfill.cn/theme) &middot; [![GitHub license][mit]][mit-url] [![NPM Package][npm]][npm-url] [![Build Size][build-size]][build-size-url]
 
-## 快速上手
+An html theme.
 
-### 一、引入theme，执行run
+## Install
 
-```shell
-yarn add @yfill-series/theme
+using npm:
+```sh
 npm install @yfill-series/theme --save
 ```
-
-```js
-import Theme from "@yfill-series/theme";
-Theme.run();
+or using yarn:
+```sh
+yarn add @yfill-series/theme
 ```
 
-```html
-<script src="https://unpkg.com/@yfill-series/theme"></script>
-<script>
+## Usage
+
+* Import resources and use the run method to get started.
+
+  ```js
+  import Theme from "@yfill-series/theme";
   Theme.run();
-</script>
-```
+  ```
 
-### 二、在 tag 上设置 theme 属性
+  ```html
+  <script src="https://unpkg.com/@yfill-series/theme"></script>
+  <script>
+    Theme.run();
+  </script>
+  ```
 
-    background-color-[?main]-[-10-10]-[?a]-[?hover]
-    font-color-[?main]-[-10-10]-[?a]-[?hover]
-    border-color-[?main]-[-10-10]-[?a]-[?hover]
-    box-shadow-[?main]-[0-2]-[?hover]
-    font-size-[12-52]-[?hover]
+* Set the theme attribute on the tag.
 
-### 三、代码示例
+  ```
+  background-color-[?main]-[-10-10]-[?a]-[?hover]
+  font-color-[?main]-[-10-10]-[?a]-[?hover]
+  border-color-[?main]-[-10-10]-[?a]-[?hover]
+  box-shadow-[?main]-[0-2]-[?hover]
+  font-size-[12-52]-[?hover]
+  ```
+
+## Code example
 
 ```html
 <div
@@ -56,9 +66,15 @@ Theme.run();
     box-shadow-main-0-hover
     border-color-1-hover
   >
-    内容
+    Content
   </div>
 </div>
-<div class="item" font-size-12>字体12</div>
-<div class="item" font-size-52>字体52</div>
+<div class="item" font-size-12>font12</div>
+<div class="item" font-size-52>font52</div>
 ```
+[mit]:https://img.shields.io/badge/license-MIT-blue.svg
+[mit-url]:https://github.com/Yfill/theme/blob/main/LICENSE
+[npm]: https://img.shields.io/npm/v/@yfill-series/theme.svg
+[npm-url]: https://www.npmjs.com/package/@yfill-series/theme
+[build-size]: https://badgen.net/bundlephobia/minzip/@yfill-series/theme
+[build-size-url]: https://bundlephobia.com/result?p=@yfill-series/theme@1.0.0

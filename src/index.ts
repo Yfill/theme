@@ -3,6 +3,7 @@ import lightColor from './color/light';
 import darkColor from './color/dark';
 import mainColor from './color/main';
 import { arrayIncludes } from './utils/array';
+import Log from './utils/log';
 import {
   DEFAULT_STYLE_MARK_LIST,
   LIGHT_MODE,
@@ -17,6 +18,23 @@ import {
 import { objectValues } from './utils/object';
 
 declare const window: Window & { themeInstance: Theme };
+const setMode = (mode: ThemeMode) => {
+  try {
+    localStorage.setItem('themeInstance@mode', mode);
+  } catch (error) {
+    Log.error(error.message);
+  }
+};
+const getMode = (): ThemeMode | null => {
+  let mode;
+  try {
+    mode = localStorage.getItem('themeInstance@mode');
+  } catch (error) {
+    Log.error(error.message);
+  }
+  if (!arrayIncludes([LIGHT_MODE, DARK_MODE], mode)) mode = null;
+  return mode as ThemeMode | null;
+};
 export default class Theme {
   static themeInstance: Theme | null = null
 
@@ -84,21 +102,21 @@ export default class Theme {
     };
 
     if (window.themeInstance) return window.themeInstance;
-    // eslint-disable-next-line no-console
-    if (prefix && !/^[a-zA-Z]/.test(`${prefix}`)) console.warn('The prefix must start with a letter');
+    if (prefix && !/^[a-zA-Z]/.test(`${prefix}`)) Log.warn('The prefix must start with a letter');
     this.commonThemeOpt = {
       prefix,
       minFontSize,
       maxFontSize,
       maxLevel,
     };
-    this.mode = mode;
+    this.mode = getMode() || mode;
     const cto = this.commonThemeOpt;
     this.lightStyleInstance = createStyle({ ...lightColor, ...lightOpt, mark: LIGHT_MARK }, cto);
     this.darkStyleInstance = createStyle({ ...darkColor, ...darkOpt, mark: DARK_MARK }, cto);
     this.mainStyleInstance = createStyle({ ...mainColor, ...mainOpt, mark: MAIN_MARK }, cto);
     Theme.themeInstance = this;
     window.themeInstance = this;
+    setMode(this.mode);
   }
 
   mount(): Theme {
@@ -173,6 +191,7 @@ export default class Theme {
     this.umount();
     this.mode = mode;
     this.mount();
+    setMode(this.mode);
     return this;
   }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 
 <head>
     <meta charset="UTF-8">
@@ -17,13 +17,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js/styles/solarized-dark.min.css">
     <script src="https://cdn.jsdelivr.net/npm/highlight.js/highlight.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/highlight.js/languages/javascript.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/highlight.js/languages/shell.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js/languages/bash.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/highlight.js/languages/css.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/es6-promise"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios"></script>
     <script src="./dist/index.js"></script>
-    <script>Theme.run({ darkOpt: { backgroundColor: '#023a48' } }).change('dark');</script>
+    <script>Theme.run({ mode: 'dark', darkOpt: { backgroundColor: '#023a48' } });</script>
     <script>
         axios.get('./README.md').then(function (res) {
             var data = res.data;
@@ -33,45 +33,32 @@
             });
         }).catch(function (e) {
             console.error(e.message);
-            document.getElementById('content').innerHTML = '加载失败';
+            document.getElementById('content').innerHTML = 'Failed to load';
         })
     </script>
 </head>
 
-<body background-color-0
-      font-color-0
->
-    <div id="content">加载中</div>
-    <h3>四、示例效果</h3>
-    <div
-        background-color-0
-        font-color-0
-        font-color-main-0-a-hover
-        font-size-18-hover
-    >
+<body background-color-0 font-color-0>
+    <div id="content">loading...</div>
+    <h2>Example effect</h3>
+    <div background-color-0 font-color-0 font-color-main-0-a-hover font-size-18-hover>
         <style>
             .item {
-            line-height: 40px;
-            border-width: 0;
-            border-style: solid;
-            transition: all 0.2s;
-            padding-left: 10px;
-            border-radius: 6px;
+                line-height: 40px;
+                border-width: 0;
+                border-style: solid;
+                transition: all 0.2s;
+                padding-left: 10px;
+                border-radius: 6px;
             }
         </style>
-        <div
-            class="item"
-            background-color-1-hover
-            border-color-4-a
-            box-shadow-2
-            box-shadow-main-0-hover
-            border-color-1-hover
-        >
-            内容
+        <div class="item" background-color-1-hover border-color-4-a box-shadow-2 box-shadow-main-0-hover
+            border-color-1-hover>
+            Content
         </div>
     </div>
-    <div class="item" font-size-12>字体12</div>
-    <div class="item" font-size-52>字体52</div>
+    <div class="item" font-size-12>font12</div>
+    <div class="item" font-size-52>font52</div>
 </body>
 
 </html>
