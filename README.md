@@ -77,4 +77,4 @@ yarn add @yfill-series/theme
 [npm]: https://img.shields.io/npm/v/@yfill-series/theme.svg
 [npm-url]: https://www.npmjs.com/package/@yfill-series/theme
 [build-size]: https://badgen.net/bundlephobia/minzip/@yfill-series/theme
-[build-size-url]: https://bundlephobia.com/result?p=@yfill-series/theme@1.0.0
+[build-size-url]: https://bundlephobia.com/result?p=@yfill-series/theme
