@@ -6,11 +6,11 @@ An html theme.
 
 using npm:
 ```sh
-npm install @yfill-series/theme --save
+npm install @yfill/theme --save
 ```
 or using yarn:
 ```sh
-yarn add @yfill-series/theme
+yarn add @yfill/theme
 ```
 
 ## Usage
@@ -18,12 +18,12 @@ yarn add @yfill-series/theme
 * Import resources and use the run method to get started.
 
   ```js
-  import Theme from "@yfill-series/theme";
+  import Theme from "@yfill/theme";
   Theme.run();
   ```
 
   ```html
-  <script src="https://unpkg.com/@yfill-series/theme"></script>
+  <script src="https://unpkg.com/@yfill/theme"></script>
   <script>
     Theme.run();
   </script>
@@ -74,7 +74,7 @@ yarn add @yfill-series/theme
 ```
 [mit]:https://img.shields.io/badge/license-MIT-blue.svg
 [mit-url]:https://github.com/Yfill/theme/blob/main/LICENSE
-[npm]: https://img.shields.io/npm/v/@yfill-series/theme.svg
-[npm-url]: https://www.npmjs.com/package/@yfill-series/theme
-[build-size]: https://badgen.net/bundlephobia/minzip/@yfill-series/theme
-[build-size-url]: https://bundlephobia.com/result?p=@yfill-series/theme
+[npm]: https://img.shields.io/npm/v/@yfill/theme.svg
+[npm-url]: https://www.npmjs.com/package/@yfill/theme
+[build-size]: https://badgen.net/bundlephobia/minzip/@yfill/theme
+[build-size-url]: https://bundlephobia.com/result?p=@yfill/theme
