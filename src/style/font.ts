@@ -8,11 +8,11 @@ export default class Font extends Base implements StyleInterface {
   sizeTupleList: SizeTupleList
 
   static colorPropMarks: PropMark[] =[
-    ['color', ['fc', 'font-color']],
+    ['color', ['font-color']],
   ]
 
   static sizePropMarks: PropMark[] = [
-    ['font-size', ['fs', 'font-size']],
+    ['font-size', ['font-size']],
   ]
 
   constructor(opt: Options, minFontSize:number = 12, maxFontSize:number = 52) {
@@ -20,7 +20,6 @@ export default class Font extends Base implements StyleInterface {
     const rootSize = parseInt(window.getComputedStyle(document.documentElement).fontSize, 10);
     const minFS = Math.max(12, minFontSize);
     const maxFS = Math.max(Math.max(12, maxFontSize), minFS);
-    // eslint-disable-next-line prefer-spread
     const moreSizeTupleList:ValueName[] = Array.apply(
       null,
       Array(maxFS - minFS + 1),

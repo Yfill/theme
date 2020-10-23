@@ -31,7 +31,7 @@ export default class Shadow extends Base implements StyleInterface {
   }
 
   static shadowPropMarks: PropMark[] = [
-    ['box-shadow', ['bs', 'box-shadow']],
+    ['box-shadow', ['box-shadow']],
   ]
 
   exportStyle(): string {

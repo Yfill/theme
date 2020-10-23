@@ -3,7 +3,7 @@ import Base from './base';
 
 export default class Background extends Base implements StyleInterface {
     static colorPropMark: PropMark[] = [
-      ['background-color', ['bgc', 'background-color']],
+      ['background-color', ['background-color']],
     ]
 
     exportStyle(): string {
