@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
-const log = (...arg:any[]) => console.log(...arg);
-const error = (...arg:any[]) => console.error(...arg);
-const warn = (...arg:any[]) => console.warn(...arg);
+export const log = (...arg: any[]) => console.log(...arg);
+export const warn = (...arg: any[]) => console.warn(...arg);
+export const error = (...arg: any[]) => console.error(...arg);
 export default {
   log,
-  error,
   warn,
+  error,
 };
