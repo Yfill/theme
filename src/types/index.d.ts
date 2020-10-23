@@ -25,6 +25,10 @@ declare type StyleOptions = {
     borderColorGroup?: string[]
     fontColorGroup?: string[]
 }
+declare type ThemePlugin = {
+    install: Function,
+    uninstall: Function
+}
 declare type ThemeOpt = {
     lightOpt?: StyleOptions,
     darkOpt?: StyleOptions,
@@ -41,16 +45,32 @@ declare type CommonThemeOpt = {
     maxFontSize?: number,
     maxLevel?: number
 }
+declare type Store = {
+    lightStyleInstance: Style | null,
+    darkStyleInstance: Style | null,
+    mainStyleInstance: Style | null,
+    otherStyleInstanceMap: { [prop: string]: Style },
+    commonThemeOpt: CommonThemeOpt = { prefix: '' },
+    initialLightOpt: StyleOptions | null,
+    initialDarkOpt: StyleOptions | null,
+    initialMainOpt: StyleOptions | null,
+}
 declare interface StyleInterface {
     mark: StyleMark
-    exportStyle: () => string,
-    addEvent?: Function,
-    removeEvent?: Function,
+    exportStyle: () => string
 }
 declare type StyleItem = {
     id: String,
     init: Function,
     destroy: Function
+}
+declare type Handler = ((...arg: any[]) => void) & { [id: string]: number };
+declare interface HandlerMapItem {
+    lastId: number,
+    record: { [id: string]: Handler }
+}
+declare interface HandlerMap {
+    [type: string]: HandlerMapItem
 }
 declare type ColorTupleList = [string, string][]
 declare type SizeTupleList = [string, string][]

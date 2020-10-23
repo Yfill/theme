@@ -1,11 +1,11 @@
-declare type ThemeMode = 'light' | 'dark'
-declare type ThemeStatus = 'mounted' | 'unmounted' | 'notMounted'
-declare type StyleMark = string
-declare type Style = {
+export declare type ThemeMode = 'light' | 'dark'
+export declare type ThemeStatus = 'mounted' | 'unmounted' | 'notMounted'
+export declare type StyleMark = string
+export declare type Style = {
     mount: Function,
     umount: Function
 }
-declare type StyleOptions = {
+export declare type StyleOptions = {
     mark: StyleMark,
     color: string,
     backgroundColor?: string,
@@ -15,7 +15,7 @@ declare type StyleOptions = {
     borderColorGroup?: string[]
     fontColorGroup?: string[]
 }
-declare type ThemeOpt = {
+export declare type ThemeOpt = {
     lightOpt?: StyleOptions,
     darkOpt?: StyleOptions,
     mainOpt?: StyleOptions,
@@ -25,14 +25,24 @@ declare type ThemeOpt = {
     maxFontSize?: number,
     maxLevel?: number,
 }
-declare type CommonThemeOpt = {
+export declare type CommonThemeOpt = {
     prefix: string,
     minFontSize?: number,
     maxFontSize?: number,
     maxLevel?: number
 }
-declare class Theme {
-
+export declare type Store = {
+    lightStyleInstance: Style | null,
+    darkStyleInstance: Style | null,
+    mainStyleInstance: Style | null,
+    otherStyleInstanceMap: { [prop: string]: Style },
+    commonThemeOpt: CommonThemeOpt = { prefix: '' },
+    initialLightOpt: StyleOptions | null,
+    initialDarkOpt: StyleOptions | null,
+    initialMainOpt: StyleOptions | null,
+}
+export declare type Handler = ((...arg: any[]) => void) & { [id: string]: number };
+export declare class Theme {
     constructor(themeOpt?: ThemeOpt): void
 
     static themeInstance: Theme | null
@@ -49,21 +59,27 @@ declare class Theme {
 
     static update(styleOpt: StyleOptions): Theme | undefined
 
+    static refresh(): Theme | undefined
+
     static change(mode?: ThemeMode): Theme | undefined
 
-    lightStyleInstance: Style | null
+    static install(plugin: ThemePlugin, ...arg: any[]): Theme | undefined
 
-    darkStyleInstance: Style | null
+    static use(plugin: ThemePlugin, ...arg: any[]): Theme | undefined
 
-    mainStyleInstance: Style | null
+    static uninstall(plugin: ThemePlugin): Theme | undefined
 
-    otherStyleInstanceMap: { [prop: string]: Style }
+    static getStore(): Store | undefined
+
+    static on(type: string, handler: Handler): Theme | undefined
+
+    static off(type: string, handler: Handler): Theme | undefined
+
+    static emit(type: string, ...arg: any[]): Theme | undefined
 
     mode: ThemeMode
 
     status: ThemeStatus
-
-    commonThemeOpt: CommonThemeOpt = { prefix: '' }
 
     mount(): Theme
 
@@ -75,6 +91,22 @@ declare class Theme {
 
     update(styleOpt: StyleOptions): Theme
 
+    refresh(): Theme
+
     change(mode?: ThemeMode): Theme
+
+    getStore(): Store
+
+    install(plugin: ThemePlugin, ...arg: any[]): Theme
+
+    use(plugin: ThemePlugin, ...arg: any[]): Theme
+
+    uninstall(plugin: ThemePlugin): Theme
+
+    on(type: string, handler: Handler): Theme
+
+    off(type: string, handler: Handler): Theme
+
+    emit(type: string, ...arg: any[]): Theme
 }
-export default Theme
+export default Theme;
