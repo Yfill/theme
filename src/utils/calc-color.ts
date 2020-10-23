@@ -38,7 +38,6 @@ export const hexDimming = (
   const isBrighten = proportion >= 0;
   const rgbc = calcLevelNumRgbcolor(color, proportionNum, isBrighten);
   if (!hasTransparent) return rgbToHex(rgbc[0], rgbc[1], rgbc[2]);
-  // return `rgba(${rgbc.join(',')},0.8)`;
   if (isBrighten) return `rgba(${hex2Rgb(color).join(',')},${(1 - proportionNum).toFixed(3)})`;
   // eslint-disable-next-line max-len
   return `rgba(${rgbc.map((item) => rgbItemBound(Math.round((255 - (item / proportionNum)) / (1 - (1 / proportionNum))))).join(',')},${(1 - proportionNum).toFixed(3)})`;
