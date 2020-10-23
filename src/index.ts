@@ -3,7 +3,6 @@ import lightColor from './color/light';
 import darkColor from './color/dark';
 import mainColor from './color/main';
 import { arrayIncludes } from './utils/array';
-import Log from './utils/log';
 import {
   DEFAULT_STYLE_MARK_LIST,
   LIGHT_MODE,
@@ -16,24 +15,38 @@ import {
   UNMOUNTED_THEME_STATUS,
 } from './constant/index';
 import { objectValues } from './utils/object';
+import { error, warn } from './utils/log';
+import { emit, on, off } from './utils/event';
 
 declare const window: Window & { themeInstance: Theme };
-const setMode = (mode: ThemeMode) => {
-  try {
-    localStorage.setItem('themeInstance@mode', mode);
-  } catch (error) {
-    Log.error(error.message);
-  }
-};
+
 const getMode = (): ThemeMode | null => {
-  let mode;
+  let mode: String | null = null;
   try {
     mode = localStorage.getItem('themeInstance@mode');
-  } catch (error) {
-    Log.error(error.message);
+  } catch (err) {
+    error(err.message);
+    mode = null;
   }
   if (!arrayIncludes([LIGHT_MODE, DARK_MODE], mode)) mode = null;
   return mode as ThemeMode | null;
+};
+const setMode = (mode: ThemeMode): void => {
+  try {
+    localStorage.setItem('themeInstance@mode', mode);
+  } catch (err) {
+    error(err.message);
+  }
+};
+const store: Store = {
+  lightStyleInstance: null,
+  darkStyleInstance: null,
+  mainStyleInstance: null,
+  otherStyleInstanceMap: {},
+  commonThemeOpt: { prefix: '' },
+  initialLightOpt: null,
+  initialDarkOpt: null,
+  initialMainOpt: null,
 };
 export default class Theme {
   static themeInstance: Theme | null = null
@@ -62,23 +75,45 @@ export default class Theme {
     return Theme.themeInstance?.update(styleOpt);
   }
 
+  static refresh(): Theme | undefined {
+    return Theme.themeInstance?.refresh();
+  }
+
   static change(mode?: ThemeMode): Theme | undefined {
     return Theme.themeInstance?.change(mode);
   }
 
-  lightStyleInstance: Style | null = null
+  static install(plugin: ThemePlugin, ...arg: any[]): Theme | undefined {
+    return Theme.themeInstance?.install(plugin, ...arg);
+  }
 
-  darkStyleInstance: Style | null = null
+  static use(plugin: ThemePlugin, ...arg: any[]): Theme | undefined {
+    return Theme.themeInstance?.install(plugin, ...arg);
+  }
 
-  mainStyleInstance: Style | null = null
+  static uninstall(plugin: ThemePlugin): Theme | undefined {
+    return Theme.themeInstance?.uninstall(plugin);
+  }
 
-  otherStyleInstanceMap: { [prop: string]: Style } = {}
+  static getStore(): Store | undefined {
+    return Theme.themeInstance?.getStore();
+  }
+
+  static on(type: string, handler: Handler): Theme | undefined {
+    return Theme.themeInstance?.on(type, handler);
+  }
+
+  static off(type: string, handler: Handler): Theme | undefined {
+    return Theme.themeInstance?.off(type, handler);
+  }
+
+  static emit(type: string, ...arg: any[]): Theme | undefined {
+    return Theme.themeInstance?.emit(type, ...arg);
+  }
 
   mode: ThemeMode = LIGHT_MODE
 
   status: ThemeStatus = NOT_MOUNTED_THEME_STATUS
-
-  commonThemeOpt: CommonThemeOpt = { prefix: '' }
 
   constructor(themeOpt?: ThemeOpt) {
     const {
@@ -102,18 +137,21 @@ export default class Theme {
     };
 
     if (window.themeInstance) return window.themeInstance;
-    if (prefix && !/^[a-zA-Z]/.test(`${prefix}`)) Log.warn('The prefix must start with a letter');
-    this.commonThemeOpt = {
+    if (prefix && !/^[a-zA-Z]/.test(`${prefix}`)) warn('The prefix must start with a letter');
+    store.commonThemeOpt = {
       prefix,
       minFontSize,
       maxFontSize,
       maxLevel,
     };
     this.mode = getMode() || mode;
-    const cto = this.commonThemeOpt;
-    this.lightStyleInstance = createStyle({ ...lightColor, ...lightOpt, mark: LIGHT_MARK }, cto);
-    this.darkStyleInstance = createStyle({ ...darkColor, ...darkOpt, mark: DARK_MARK }, cto);
-    this.mainStyleInstance = createStyle({ ...mainColor, ...mainOpt, mark: MAIN_MARK }, cto);
+    const cto = store.commonThemeOpt;
+    store.initialLightOpt = { ...lightColor, ...lightOpt, mark: LIGHT_MARK };
+    store.initialDarkOpt = { ...darkColor, ...darkOpt, mark: DARK_MARK };
+    store.initialMainOpt = { ...mainColor, ...mainOpt, mark: MAIN_MARK };
+    store.lightStyleInstance = createStyle(store.initialLightOpt, cto);
+    store.darkStyleInstance = createStyle(store.initialDarkOpt, cto);
+    store.mainStyleInstance = createStyle(store.initialMainOpt, cto);
     Theme.themeInstance = this;
     window.themeInstance = this;
     setMode(this.mode);
@@ -121,40 +159,44 @@ export default class Theme {
 
   mount(): Theme {
     if (this.status === MOUNTED_THEME_STATUS) return this;
-    if (this.mode === LIGHT_MODE) this.lightStyleInstance?.mount();
-    else if (this.mode === DARK_MODE) this.darkStyleInstance?.mount();
-    this.mainStyleInstance?.mount();
-    objectValues(this.otherStyleInstanceMap)
+    if (this.mode === LIGHT_MODE) store.lightStyleInstance?.mount();
+    else if (this.mode === DARK_MODE) store.darkStyleInstance?.mount();
+    store.mainStyleInstance?.mount();
+    objectValues(store.otherStyleInstanceMap)
       .forEach((item) => item.mount());
     this.status = MOUNTED_THEME_STATUS;
+    emit('mount', this);
     return this;
   }
 
   umount(): Theme {
     if (this.status === UNMOUNTED_THEME_STATUS) return this;
-    if (this.mode === LIGHT_MODE) this.lightStyleInstance?.umount();
-    else if (this.mode === DARK_MODE) this.darkStyleInstance?.umount();
-    this.mainStyleInstance?.umount();
-    objectValues(this.otherStyleInstanceMap)
+    if (this.mode === LIGHT_MODE) store.lightStyleInstance?.umount();
+    else if (this.mode === DARK_MODE) store.darkStyleInstance?.umount();
+    store.mainStyleInstance?.umount();
+    objectValues(store.otherStyleInstanceMap)
       .forEach((item) => item.umount());
     this.status = UNMOUNTED_THEME_STATUS;
+    emit('umount', this);
     return this;
   }
 
   add(styleOpt: StyleOptions): Theme {
     const styleMark = styleOpt.mark;
     if (!styleMark || arrayIncludes(DEFAULT_STYLE_MARK_LIST, styleMark)) return this;
-    const styleInstance = createStyle(styleOpt, this.commonThemeOpt);
+    const styleInstance = createStyle(styleOpt, store.commonThemeOpt);
     styleInstance.mount();
-    this.otherStyleInstanceMap[styleMark] = styleInstance;
+    store.otherStyleInstanceMap[styleMark] = styleInstance;
+    emit('add', styleOpt);
     return this;
   }
 
   remove(styleMark: StyleMark): Theme {
     if (styleMark) {
-      const styleInstance = this.otherStyleInstanceMap[styleMark];
+      const styleInstance = store.otherStyleInstanceMap[styleMark];
       styleInstance?.umount();
-      delete this.otherStyleInstanceMap[styleMark];
+      delete store.otherStyleInstanceMap[styleMark];
+      emit('remove', styleMark);
     }
     return this;
   }
@@ -163,35 +205,75 @@ export default class Theme {
     const styleMark = styleOpt.mark;
     if (
       !arrayIncludes(DEFAULT_STYLE_MARK_LIST, styleMark)
-      && !this.otherStyleInstanceMap[styleMark]
+      && !store.otherStyleInstanceMap[styleMark]
     ) return this;
-    const styleInstance = createStyle(styleOpt, this.commonThemeOpt);
+    const styleInstance = createStyle(styleOpt, store.commonThemeOpt);
     if (styleMark === LIGHT_MARK) {
-      this.lightStyleInstance?.umount();
-      this.lightStyleInstance = styleInstance;
-      if (this.mode === LIGHT_MODE) this.lightStyleInstance?.mount();
+      store.lightStyleInstance?.umount();
+      store.lightStyleInstance = styleInstance;
+      if (this.mode === LIGHT_MODE) store.lightStyleInstance?.mount();
     } else if (styleMark === DARK_MARK) {
-      this.darkStyleInstance?.umount();
-      this.darkStyleInstance = styleInstance;
-      if (this.mode === DARK_MODE) this.darkStyleInstance?.mount();
+      store.darkStyleInstance?.umount();
+      store.darkStyleInstance = styleInstance;
+      if (this.mode === DARK_MODE) store.darkStyleInstance?.mount();
     } else if (styleMark === MAIN_MARK) {
-      this.mainStyleInstance?.umount();
-      this.mainStyleInstance = styleInstance;
-      this.mainStyleInstance?.mount();
+      store.mainStyleInstance?.umount();
+      store.mainStyleInstance = styleInstance;
+      store.mainStyleInstance?.mount();
     } else {
-      this.otherStyleInstanceMap[styleMark]?.umount();
-      this.otherStyleInstanceMap[styleMark] = styleInstance;
-      this.otherStyleInstanceMap[styleMark]?.mount();
+      store.otherStyleInstanceMap[styleMark]?.umount();
+      store.otherStyleInstanceMap[styleMark] = styleInstance;
+      store.otherStyleInstanceMap[styleMark]?.mount();
     }
+    emit('update', styleOpt);
+    return this;
+  }
+
+  refresh(): Theme {
+    this.umount().mount();
+    emit('refresh', this);
     return this;
   }
 
   change(mode: ThemeMode = this.mode === LIGHT_MODE ? DARK_MODE : LIGHT_MODE): Theme {
     if (mode === this.mode) return this;
-    this.umount();
     this.mode = mode;
-    this.mount();
+    this.refresh();
     setMode(this.mode);
+    emit('change', mode);
+    return this;
+  }
+
+  getStore(): Store {
+    return JSON.parse(JSON.stringify(store));
+  }
+
+  install(plugin: ThemePlugin, ...arg: any[]): Theme {
+    plugin.install(Theme.themeInstance, ...arg);
+    return this;
+  }
+
+  use(plugin: ThemePlugin, ...arg: any[]): Theme {
+    return this.install(plugin, ...arg);
+  }
+
+  uninstall(plugin: ThemePlugin): Theme {
+    plugin.uninstall(Theme.themeInstance);
+    return this;
+  }
+
+  on(type: string, handler: Handler): Theme {
+    on(type, handler);
+    return this;
+  }
+
+  off(type: string, handler: Handler): Theme {
+    off(type, handler);
+    return this;
+  }
+
+  emit(type: string, ...arg: any[]): Theme {
+    emit(type, ...arg);
     return this;
   }
 }
