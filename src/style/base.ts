@@ -2,6 +2,7 @@ import { curry } from '../utils/curry';
 import { calcColor } from '../utils/calc-color';
 import { transformToNameValues } from '../utils/transform-to-name-values';
 
+const defaultMaxLevel = 10;
 export default class Base {
   mark: StyleMark
 
@@ -11,8 +12,7 @@ export default class Base {
 
   static getValueNames = (
     cc: (index: number, hasTransparent: boolean) => string,
-    maxLevel: number = 10,
-    // eslint-disable-next-line prefer-spread
+    maxLevel: number,
   ) => Array.apply(null, Array(maxLevel + 1))
     .reduce((result: ValueName[], item, index) => result
       .concat([false, true]
@@ -27,9 +27,13 @@ export default class Base {
         ])), [])
 
   constructor(opt: Options) {
-    const cc = curry(calcColor, opt.color, opt.colorGroup, opt.mark, opt.maxLevel);
+    const maxLevel = Math.max(
+      opt.maxLevel ?? defaultMaxLevel,
+      (opt.colorGroup?.length ?? 0) - 1,
+    );
+    const cc = curry(calcColor, opt.color, opt.colorGroup, opt.mark, maxLevel);
     this.mark = opt.mark;
     this.prefix = opt.prefix;
-    this.colorTupleList = transformToNameValues(Base.getValueNames(cc, opt.maxLevel));
+    this.colorTupleList = transformToNameValues(Base.getValueNames(cc, maxLevel));
   }
 }
