@@ -11,8 +11,13 @@ export const createStyle = (
     borderColor,
     fontColor,
     backgroundColorGroup,
+    backgroundColorNameMap,
     borderColorGroup,
+    borderColorNameMap,
     fontColorGroup,
+    fontColorNameMap,
+    fontSizeNameMap,
+    boxShadowNameMap,
     mark,
   }: StyleOptions,
   commonThemeOpt: CommonThemeOpt,
@@ -27,20 +32,24 @@ export const createStyle = (
       ...commonOpts,
       color: backgroundColor || calcBackgroundColor(color, mark),
       colorGroup: backgroundColorGroup,
+      nameMapGroup: [backgroundColorNameMap],
     }),
     new Border({
       ...commonOpts,
       color: borderColor || calcBorderColor(color, mark),
       colorGroup: borderColorGroup,
+      nameMapGroup: [borderColorNameMap],
     }),
     new Font({
       ...commonOpts,
       color: fontColor || calcFontColor(color, mark),
       colorGroup: fontColorGroup,
+      nameMapGroup: [fontColorNameMap, fontSizeNameMap],
     }, commonThemeOpt.minFontSize, commonThemeOpt.maxFontSize),
     new Shadow({
       ...commonOpts,
       color,
+      nameMapGroup: [undefined, boxShadowNameMap],
     }),
   ];
   return {

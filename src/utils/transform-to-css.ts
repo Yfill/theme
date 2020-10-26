@@ -9,17 +9,17 @@ import {
 
 export const transformToCss = (
   propMarks: PropMark[],
-  nameValues: NameValue[],
+  valueNamesGroup: ValueName[],
   styleMark: StyleMark,
   prefix: string,
-): string => nameValues.reduce((
+): string => valueNamesGroup.reduce((
   result,
-  nameValue,
+  valueName,
 ) => {
-  let pMarks:PropMark[] = propMarks;
-  if (styleMark)pMarks = addStyleMarkToPropMarks(styleMark, pMarks);
-  const [name, value] = nameValue;
-  const colorStatusList:ColorStatusList = [
+  let pMarks: PropMark[] = propMarks;
+  if (styleMark) pMarks = addStyleMarkToPropMarks(styleMark, pMarks);
+  const [value, names] = valueName;
+  const colorStatusList: ColorStatusList = [
     DEFAULT_COLOR_STATUS,
     // LINK_COLOR_STATUS,
     // ACTICE_COLOR_STATUS,
@@ -34,7 +34,7 @@ export const transformToCss = (
     return str + colorStatusList.reduce(
       (text, status) => {
         const isDefault = status === DEFAULT_COLOR_STATUS;
-        return `${text}${marks.map((mark) => `[${prefix ? `${prefix}-` : ''}${mark}-${name}${!isDefault ? `-${status}` : ''}]${!isDefault ? `:${status}` : ''}`).join(',')}{${prop}:${value}${!isDefault ? ' !important' : ''};}`;
+        return `${text}${names.map((name) => marks.map((mark) => `[${prefix ? `${prefix}-` : ''}${mark}-${name}${!isDefault ? `-${status}` : ''}]${!isDefault ? `:${status}` : ''}`).join(',')).join(',')}{${prop}:${value}${!isDefault ? ' !important' : ''};}`;
       },
       '',
     );

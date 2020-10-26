@@ -3,11 +3,13 @@ declare type ThemeStatus = 'mounted' | 'unmounted' | 'notMounted'
 declare type StyleMark = string
 declare type ColorStatus = 'default' | 'link' | 'visited' | 'hover' | 'active'
 declare type ColorGroup = string[]
+declare type NameMap = { [index: string]: string }
 declare type ColorStatusList = ColorStatus[]
 declare type Options = {
     mark: StyleMark,
     color: string,
     colorGroup?: ColorGroup,
+    nameMapGroup: (NameMap | undefined)[],
     prefix: string,
     maxLevel?: number
 }
@@ -21,9 +23,14 @@ declare type StyleOptions = {
     backgroundColor?: string,
     borderColor?: string,
     fontColor?: string,
-    backgroundColorGroup?: string[]
-    borderColorGroup?: string[]
-    fontColorGroup?: string[]
+    backgroundColorGroup?: ColorGroup
+    backgroundColorNameMap?: NameMap
+    borderColorGroup?: ColorGroup
+    borderColorNameMap?: NameMap
+    fontColorGroup?: ColorGroup
+    fontColorNameMap?: NameMap,
+    fontSizeNameMap?: NameMap,
+    boxShadowNameMap?: NameMap,
 }
 declare type ThemePlugin = {
     install: Function,

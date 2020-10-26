@@ -5,15 +5,22 @@ export declare type Style = {
     mount: Function,
     umount: Function
 }
+export declare type ColorGroup = string[]
+export declare type NameMap = { [index: string]: string }
 export declare type StyleOptions = {
     mark: StyleMark,
     color: string,
     backgroundColor?: string,
     borderColor?: string,
     fontColor?: string,
-    backgroundColorGroup?: string[]
-    borderColorGroup?: string[]
-    fontColorGroup?: string[]
+    backgroundColorGroup?: ColorGroup
+    backgroundColorNameMap?: NameMap
+    borderColorGroup?: ColorGroup
+    borderColorNameMap?: NameMap
+    fontColorGroup?: ColorGroup
+    fontColorNameMap?: NameMap,
+    fontSizeNameMap?: NameMap,
+    boxShadowNameMap?: NameMap,
 }
 export declare type ThemeOpt = {
     lightOpt?: StyleOptions,

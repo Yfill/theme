@@ -1,6 +1,6 @@
 import { curry } from '../utils/curry';
 import { calcColor } from '../utils/calc-color';
-import { transformToNameValues } from '../utils/transform-to-name-values';
+import { arrayFilterEmptyItem } from '../utils/array';
 
 const defaultMaxLevel = 10;
 export default class Base {
@@ -8,22 +8,23 @@ export default class Base {
 
   prefix: string
 
-  colorTupleList: ColorTupleList
+  colorValueNames: ValueName[]
 
   static getValueNames = (
     cc: (index: number, hasTransparent: boolean) => string,
     maxLevel: number,
+    nameMap: NameMap = {},
   ) => Array.apply(null, Array(maxLevel + 1))
     .reduce((result: ValueName[], item, index) => result
       .concat([false, true]
         .map((hasTransparent) => [
           cc(index, hasTransparent),
-          [`${index}${hasTransparent ? '-a' : ''}`],
+          arrayFilterEmptyItem([`${index}${hasTransparent ? '-a' : ''}`, nameMap[index]]),
         ]))
       .concat(index === 0 ? [] : [false, true]
         .map((hasTransparent) => [
           cc(-index, hasTransparent),
-          [`${-index}${hasTransparent ? '-a' : ''}`],
+          arrayFilterEmptyItem([`${-index}${hasTransparent ? '-a' : ''}`, nameMap[-index]]),
         ])), [])
 
   constructor(opt: Options) {
@@ -34,6 +35,6 @@ export default class Base {
     const cc = curry(calcColor, opt.color, opt.colorGroup, opt.mark, maxLevel);
     this.mark = opt.mark;
     this.prefix = opt.prefix;
-    this.colorTupleList = transformToNameValues(Base.getValueNames(cc, maxLevel));
+    this.colorValueNames = Base.getValueNames(cc, maxLevel, opt.nameMapGroup[0]);
   }
 }
