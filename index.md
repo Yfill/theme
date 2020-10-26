@@ -42,35 +42,36 @@ yarn add @yfill/theme
 ## Code example
 
 ```html
-<div
-  background-color-0
-  font-color-0
-  font-color-main-0-a-hover
-  font-size-18-hover
->
-  <style>
-    .item {
-      line-height: 40px;
-      border-width: 0;
-      border-style: solid;
-      transition: all 0.2s;
-      padding-left: 10px;
-      border-radius: 6px;
-    }
-  </style>
-  <div
+<div 
     class="item"
-    background-color-1-hover
-    border-color-4-a
+    font-size-12
+    background-color-1
     box-shadow-2
+    border-color--4-a
+    font-size-52-hover
+    font-color-main-0-hover
+    background-color-2-hover
     box-shadow-main-0-hover
-    border-color-1-hover
-  >
+    border-color-main-1-hover>
     Content
-  </div>
 </div>
-<div class="item" font-size-12>font12</div>
-<div class="item" font-size-52>font52</div>
+<div 
+    class="item" 
+    font-size-12
+    background-color-1
+    box-shadow-2
+    border-color--4-a>
+    font12
+</div>
+<div 
+    class="item" 
+    font-size-52
+    font-color-main-0
+    background-color-2
+    box-shadow-main-0
+    border-color-main-1>
+    font52
+</div>
 ```
 [mit]:https://img.shields.io/badge/license-MIT-blue.svg
 [mit-url]:https://github.com/Yfill/theme/blob/main/LICENSE
