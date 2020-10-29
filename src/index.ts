@@ -171,8 +171,8 @@ export default class Theme {
 
   umount(): Theme {
     if (this.status === UNMOUNTED_THEME_STATUS) return this;
-    if (this.mode === LIGHT_MODE) store.lightStyleInstance?.umount();
-    else if (this.mode === DARK_MODE) store.darkStyleInstance?.umount();
+    store.lightStyleInstance?.umount();
+    store.darkStyleInstance?.umount();
     store.mainStyleInstance?.umount();
     objectValues(store.otherStyleInstanceMap)
       .forEach((item) => item.umount());
