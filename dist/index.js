@@ -1,7 +1,7 @@
 /*
       @license
-      @yfill/theme v1.0.5
-      Sat, 31 Oct 2020 13:54:39 GMT
+      @yfill/theme v1.0.6
+      Sat, 31 Oct 2020 14:55:36 GMT
       https://yfill.cn/theme
       Released under the MIT License.
     */
