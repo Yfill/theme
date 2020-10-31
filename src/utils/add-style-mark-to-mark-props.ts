@@ -1,5 +1,7 @@
 import { LIGHT_MARK, DARK_MARK } from '../constant/index';
 import { arrayIncludes } from './array';
+import type { StyleMark } from '../index';
+import type { PropMark } from '../style/base';
 
 export const addStyleMarkToPropMarks = (
   styleMark: StyleMark,

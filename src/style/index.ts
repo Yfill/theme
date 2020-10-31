@@ -3,6 +3,7 @@ import Border from './border';
 import Font from './font';
 import Shadow from './shadow';
 import { calcBackgroundColor, calcBorderColor, calcFontColor } from '../utils/calc-color';
+import type { StyleOptions, CommonThemeOpt, Style } from '../index';
 
 export const createStyle = (
   {

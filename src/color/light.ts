@@ -1,5 +1,6 @@
 import { LIGHT_MODE } from '../constant/index';
 import { calcBackgroundColor, calcBorderColor, calcFontColor } from '../utils/calc-color';
+import type { StyleOptions } from '../index';
 
 const color = '#ffffff';
 export const lightColor:StyleOptions = {

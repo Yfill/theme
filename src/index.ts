@@ -1,3 +1,4 @@
+import EventHub from '@yfill/event-hub';
 import { createStyle } from './style/index';
 import lightColor from './color/light';
 import darkColor from './color/dark';
@@ -16,10 +17,67 @@ import {
 } from './constant/index';
 import { objectValues } from './utils/object';
 import { error, warn } from './utils/log';
-import { emit, on, off } from './utils/event';
 
+declare type ThemeMode = 'light' | 'dark'
+declare type ThemeStatus = 'mounted' | 'unmounted' | 'notMounted'
+export declare type Style = {
+  mount: Function,
+  umount: Function
+}
+export declare type CommonThemeOpt = {
+  prefix: string,
+  minFontSize?: number,
+  maxFontSize?: number,
+  maxLevel?: number
+}
+export declare type ColorGroup = string[]
+export declare type StyleMark = string
+export declare type NameMap = { [index: string]: string }
+export declare type StyleOptions = {
+  mark: StyleMark,
+  color: string,
+  backgroundColor?: string,
+  borderColor?: string,
+  fontColor?: string,
+  backgroundColorGroup?: ColorGroup
+  backgroundColorNameMap?: NameMap
+  borderColorGroup?: ColorGroup
+  borderColorNameMap?: NameMap
+  fontColorGroup?: ColorGroup
+  fontColorNameMap?: NameMap,
+  fontSizeNameMap?: NameMap,
+  boxShadowNameMap?: NameMap,
+}
+declare type Store = {
+  lightStyleInstance: Style | null,
+  darkStyleInstance: Style | null,
+  mainStyleInstance: Style | null,
+  otherStyleInstanceMap: { [prop: string]: Style },
+  commonThemeOpt: CommonThemeOpt,
+  initialLightOpt: StyleOptions | null,
+  initialDarkOpt: StyleOptions | null,
+  initialMainOpt: StyleOptions | null,
+}
+declare type ThemeOpt = {
+  lightOpt?: StyleOptions,
+  darkOpt?: StyleOptions,
+  mainOpt?: StyleOptions,
+  mode?: ThemeMode,
+  prefix?: string,
+  minFontSize?: number,
+  maxFontSize?: number,
+  maxLevel?: number,
+}
+declare type ThemePlugin = {
+  install: Function,
+  uninstall: Function
+}
+declare type Handler = (...arg: any[]) => void;
 declare const window: Window & { themeInstance: Theme };
-
+const eventHub = new EventHub();
+const on = eventHub.on.bind(eventHub);
+const off = eventHub.off.bind(eventHub);
+const emit = eventHub.emit.bind(eventHub);
 const getMode = (): ThemeMode | null => {
   let mode: String | null = null;
   try {
@@ -49,6 +107,8 @@ const store: Store = {
   initialMainOpt: null,
 };
 export default class Theme {
+  static EventHub = EventHub
+
   static themeInstance: Theme | null = null
 
   static run(themeOpt?: ThemeOpt): Theme {
@@ -146,12 +206,15 @@ export default class Theme {
     };
     this.mode = getMode() || mode;
     const cto = store.commonThemeOpt;
-    store.initialLightOpt = { ...lightColor, ...lightOpt, mark: LIGHT_MARK };
-    store.initialDarkOpt = { ...darkColor, ...darkOpt, mark: DARK_MARK };
-    store.initialMainOpt = { ...mainColor, ...mainOpt, mark: MAIN_MARK };
-    store.lightStyleInstance = createStyle(store.initialLightOpt, cto);
-    store.darkStyleInstance = createStyle(store.initialDarkOpt, cto);
-    store.mainStyleInstance = createStyle(store.initialMainOpt, cto);
+    const lOpt = { ...lightColor, ...lightOpt, mark: LIGHT_MARK };
+    const dOpt = { ...darkColor, ...darkOpt, mark: DARK_MARK };
+    const mOpt = { ...mainColor, ...mainOpt, mark: MAIN_MARK };
+    store.initialLightOpt = lOpt;
+    store.initialDarkOpt = dOpt;
+    store.initialMainOpt = mOpt;
+    store.lightStyleInstance = createStyle(lOpt, cto);
+    store.darkStyleInstance = createStyle(dOpt, cto);
+    store.mainStyleInstance = createStyle(mOpt, cto);
     Theme.themeInstance = this;
     window.themeInstance = this;
     setMode(this.mode);

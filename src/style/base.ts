@@ -1,7 +1,22 @@
 import { curry } from '../utils/curry';
 import { calcColor } from '../utils/calc-color';
 import { arrayFilterEmptyItem } from '../utils/array';
+import type { StyleMark, ColorGroup, NameMap } from '../index';
 
+export declare type ValueName = [string, string[]]
+export declare type Options = {
+  mark: StyleMark,
+  color: string,
+  colorGroup?: ColorGroup,
+  nameMapGroup: (NameMap | undefined)[],
+  prefix: string,
+  maxLevel?: number
+}
+export declare interface StyleInterface {
+  mark: StyleMark
+  exportStyle: () => string
+}
+export declare type PropMark = [string, string[]]
 const defaultMaxLevel = 10;
 export default class Base {
   mark: StyleMark

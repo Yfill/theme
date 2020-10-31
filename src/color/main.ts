@@ -1,5 +1,6 @@
 import { MAIN_MARK } from '../constant/index';
 import { calcBackgroundColor, calcBorderColor, calcFontColor } from '../utils/calc-color';
+import type { StyleOptions } from '../index';
 
 const color = '#1890ff';
 export const mainColor:StyleOptions = {

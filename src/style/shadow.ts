@@ -4,6 +4,10 @@ import { curry } from '../utils/curry';
 import { transformToCss } from '../utils/transform-to-css';
 import { DARK_MARK, LIGHT_MARK } from '../constant/index';
 import { arrayFilterEmptyItem, arrayIncludes } from '../utils/array';
+import type {
+  StyleInterface, PropMark, ValueName, Options,
+} from './base';
+import type { NameMap } from '../index';
 
 export default class Shadow extends Base implements StyleInterface {
   shadowBoxvalueNames: ValueName[]

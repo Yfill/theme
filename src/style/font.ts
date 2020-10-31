@@ -2,6 +2,10 @@ import { transformToCss } from '../utils/transform-to-css';
 import { LIGHT_MARK, DARK_MARK } from '../constant/index';
 import { arrayFilterEmptyItem, arrayIncludes } from '../utils/array';
 import Base from './base';
+import type {
+  StyleInterface, PropMark, ValueName, Options,
+} from './base';
+import type { NameMap } from '../index';
 
 export default class Font extends Base implements StyleInterface {
   fontSizeValueNames: ValueName[]
