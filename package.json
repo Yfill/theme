@@ -26,8 +26,10 @@
     "types/*.d.ts"
   ],
   "scripts": {
-    "build": "set NODE_ENV=production&& rollup -c",
-    "serve": "set NODE_ENV=development&& rollup -c&& nodemon serve",
+    "build": "run-p build:lib build:type",
+    "build:lib": "set NODE_ENV=production&& rimraf dist&& rollup -c",
+    "build:type": "rimraf types&& tsc -d --emitDeclarationOnly --declarationDir types&& rimraf types/color types/constant types/style types/utils",
+    "serve": "set NODE_ENV=development&& rollup -c&& node serve",
     "lint": "eslint --fix src/**/*.ts"
   },
   "browserslist": [
@@ -50,9 +52,13 @@
     "eslint": "^7.7.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
-    "nodemon": "^2.0.4",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
     "rollup": "^2.26.5",
     "rollup-plugin-terser": "^7.0.0",
     "typescript": "^4.0.2"
+  },
+  "dependencies": {
+    "@yfill/event-hub": "^1.0.1"
   }
 }

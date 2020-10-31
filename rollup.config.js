@@ -3,6 +3,7 @@ import typescript from '@rollup/plugin-typescript';
 import babel from '@rollup/plugin-babel';
 import { terser } from 'rollup-plugin-terser';
 import commonjs from '@rollup/plugin-commonjs';
+import pkg from './package.json';
 
 const isProduction = process.env.NODE_ENV === 'production';
 const basePlugins = [
@@ -12,7 +13,6 @@ const basePlugins = [
   babel({
     exclude: [
       'node_modules/**',
-      './test/**',
     ],
     babelHelpers: 'bundled',
     extensions: [
@@ -30,6 +30,14 @@ export default {
     name: 'Theme',
     format: 'umd',
     file: isProduction ? 'dist/index.js' : 'node_modules/.theme/dist/index.js',
+    sourcemap: !isProduction,
+    banner: `/*
+      @license
+      ${pkg.name} v${pkg.version}
+      ${new Date().toGMTString()}
+      ${pkg.homepage}
+      Released under the ${pkg.license} License.
+    */`,
   },
   plugins: [
     ...basePlugins,

@@ -19,6 +19,7 @@
         "import/no-unresolved": "off",
         "linebreak-style": "off",
         "prefer-spread": "off",
-        "class-methods-use-this": "off"
+        "class-methods-use-this": "off",
+        "no-unused-vars": "off"
     }
 }
