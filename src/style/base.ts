@@ -3,8 +3,8 @@ import { calcColor } from '../utils/calc-color';
 import { arrayFilterEmptyItem } from '../utils/array';
 import type { StyleMark, ColorGroup, NameMap } from '../index';
 
-export declare type ValueName = [string, string[]]
-export declare type Options = {
+export type ValueName = [string, string[]]
+export type Options = {
   mark: StyleMark,
   color: string,
   colorGroup?: ColorGroup,
@@ -12,11 +12,11 @@ export declare type Options = {
   prefix: string,
   maxLevel?: number
 }
-export declare interface StyleInterface {
+export interface StyleInterface {
   mark: StyleMark
   exportStyle: () => string
 }
-export declare type PropMark = [string, string[]]
+export type PropMark = [string, string[]]
 const defaultMaxLevel = 10;
 export default class Base {
   mark: StyleMark

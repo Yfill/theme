@@ -6,11 +6,11 @@ import {
   // VISITED_COLOR_STATUS,
   HOVER_COLOR_STATUS,
 } from '../constant/index';
-import { StyleMark } from '../index';
-import { PropMark, ValueName } from '../style/base';
+import type { StyleMark } from '../index';
+import type { PropMark, ValueName } from '../style/base';
 
-export declare type ColorStatus = 'default' | 'link' | 'visited' | 'hover' | 'active'
-export declare type ColorStatusList = ColorStatus[]
+export type ColorStatus = 'default' | 'link' | 'visited' | 'hover' | 'active'
+export type ColorStatusList = ColorStatus[]
 export const transformToCss = (
   propMarks: PropMark[],
   valueNamesGroup: ValueName[],
