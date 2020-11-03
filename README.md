@@ -1,4 +1,4 @@
-# [Theme](https://yfill.cn/theme) &middot; [![GitHub license][mit]][mit-url] [![NPM Package][npm]][npm-url] [![Build Size][build-size]][build-size-url]
+# [Theme](https://yfill.cn/theme) &middot; [![GitHub license][mit]][mit-url] [![NPM Package][npm]][npm-url] [![Monthly Downloads][md]][md-url] [![Build Size][build-size]][build-size-url]
 
 An ultra-light, universal and concise theme mode.
 
@@ -82,6 +82,8 @@ yarn add @yfill/theme
 
 [mit]: https://img.shields.io/badge/license-MIT-blue.svg
 [mit-url]: https://github.com/Yfill/theme/blob/main/LICENSE
+[md]: https://badgen.net/npm/dm/@yfill/theme
+[md-url]: https://npmcharts.com/compare/@yfill/theme?minimal=true
 [npm]: https://img.shields.io/npm/v/@yfill/theme.svg
 [npm-url]: https://www.npmjs.com/package/@yfill/theme
 [build-size]: https://badgen.net/bundlephobia/minzip/@yfill/theme
