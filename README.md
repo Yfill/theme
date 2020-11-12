@@ -1,4 +1,4 @@
-# [Theme](https://yfill.cn/theme) &middot; [![GitHub license][mit]][mit-url] [![NPM Package][npm]][npm-url] [![Monthly Downloads][md]][md-url] [![Build Size][build-size]][build-size-url]
+# [Theme](https://yfill.cn/theme) &middot; [![GitHub license][mit]][mit-url] [![NPM Package][npm]][npm-url] [![Monthly Downloads][md]][md-url] [![Build Size][build-size]][build-size-url] [![Dependencies Status][dependencies-status]][dependencies-status-url] [![DevDependencies Status][dev-dependencies-status]][dev-dependencies-status-url]
 
 An ultra-light, universal and concise theme mode.
 
@@ -88,3 +88,7 @@ yarn add @yfill/theme
 [npm-url]: https://www.npmjs.com/package/@yfill/theme
 [build-size]: https://badgen.net/bundlephobia/minzip/@yfill/theme
 [build-size-url]: https://bundlephobia.com/result?p=@yfill/theme
+[dependencies-status]: https://david-dm.org/Yfill/theme/status.svg
+[dependencies-status-url]: https://david-dm.org/Yfill/theme
+[dev-dependencies-status]: https://david-dm.org/Yfill/theme/dev-status.svg
+[dev-dependencies-status-url]: https://david-dm.org/Yfill/theme?type=dev
