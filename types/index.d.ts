@@ -8,6 +8,7 @@ export declare type CommonThemeOpt = {
     minFontSize?: number;
     maxFontSize?: number;
     maxLevel?: number;
+    enableCssVariables?: boolean;
 };
 export declare type ColorGroup = string[];
 export declare type StyleMark = string;
@@ -17,6 +18,7 @@ export declare type NameMap = {
 export declare type StyleOptions = {
     mark: StyleMark;
     color: string;
+    placeholderColor?: string;
     backgroundColor?: string;
     borderColor?: string;
     fontColor?: string;
@@ -28,5 +30,6 @@ export declare type StyleOptions = {
     fontColorNameMap?: NameMap;
     fontSizeNameMap?: NameMap;
     boxShadowNameMap?: NameMap;
+    enableCssVariables?: boolean;
 };
 export default Theme;
