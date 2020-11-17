@@ -1,4 +1,12 @@
-# [Theme](https://yfill.cn/theme) &middot; [![GitHub license][mit]][mit-url] [![NPM Package][npm]][npm-url] [![Monthly Downloads][md]][md-url] [![Build Size][build-size]][build-size-url] [![Dependencies Status][dependencies-status]][dependencies-status-url] [![DevDependencies Status][dev-dependencies-status]][dev-dependencies-status-url]
+# [Theme](https://yfill.cn/theme)
+
+[![GitHub license][mit]][mit-url] 
+[![Code Style][code-style]][code-style-url] 
+[![NPM Package][npm]][npm-url] 
+[![Monthly Downloads][md]][md-url] 
+[![Build Size][build-size]][build-size-url] 
+[![Dependencies Status][dependencies-status]][dependencies-status-url]
+[![DevDependencies Status][dev-dependencies-status]][dev-dependencies-status-url]
 
 An ultra-light, universal and concise theme mode.
 
@@ -82,6 +90,8 @@ yarn add @yfill/theme
 
 [mit]: https://img.shields.io/badge/license-MIT-blue.svg
 [mit-url]: https://github.com/Yfill/theme/blob/main/LICENSE
+[code-style]: https://img.shields.io/badge/code_style-airbnb-brightgreen
+[code-style-url]: https://www.npmjs.com/package/eslint-config-airbnb
 [md]: https://badgen.net/npm/dm/@yfill/theme
 [md-url]: https://npmcharts.com/compare/@yfill/theme?minimal=true
 [npm]: https://img.shields.io/npm/v/@yfill/theme.svg
