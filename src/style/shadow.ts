@@ -1,7 +1,7 @@
 import Base from './base';
 import { hexDimming } from '../utils/calc-color';
 import { curry } from '../utils/curry';
-import { transformToCss } from '../utils/transform-to-css';
+import { transformToCss, transformToCssVariables } from '../utils/transform-to-css';
 import { DARK_MARK, LIGHT_MARK } from '../constant/index';
 import { arrayFilterEmptyItem, arrayIncludes } from '../utils/array';
 import type {
@@ -10,7 +10,7 @@ import type {
 import type { NameMap } from '../index';
 
 export default class Shadow extends Base implements StyleInterface {
-  shadowBoxvalueNames: ValueName[]
+  shadowBoxValueNames: ValueName[]
 
   constructor(opt: Options) {
     super(opt);
@@ -26,11 +26,11 @@ export default class Shadow extends Base implements StyleInterface {
       ),
     );
     const nameMap: NameMap = opt.nameMapGroup[1] || {};
-    this.shadowBoxvalueNames = [
+    this.shadowBoxValueNames = [
       `0 1px 2px -2px ${cc(1 - 0.16)},0 3px 6px 0 ${cc(1 - 0.12)},0 5px 12px 4px ${cc(1 - 0.09)}`,
       `0 3px 6px -4px ${cc(1 - 0.12)},0 6px 16px 0 ${cc(1 - 0.08)},0 9px 28px 8px ${cc(1 - 0.05)}`,
       `0 6px 16px -8px ${cc(1 - 0.08)},0 9px 28px 0 ${cc(1 - 0.05)},0 12px 48px 16px ${cc(1 - 0.03)}`,
-    ].map((value, index): ValueName => [value, arrayFilterEmptyItem([`${index}`, nameMap[index]])]);
+    ].map((value, index): ValueName => [value, arrayFilterEmptyItem([`${index}`, nameMap[index]]) as string[]]);
   }
 
   static shadowPropMarks: PropMark[] = [
@@ -40,7 +40,16 @@ export default class Shadow extends Base implements StyleInterface {
   exportStyle(): string {
     return transformToCss(
       Shadow.shadowPropMarks,
-      this.shadowBoxvalueNames,
+      this.shadowBoxValueNames,
+      this.mark,
+      this.prefix,
+    );
+  }
+
+  exportCssVariables(): string {
+    return transformToCssVariables(
+      Shadow.shadowPropMarks,
+      this.shadowBoxValueNames,
       this.mark,
       this.prefix,
     );

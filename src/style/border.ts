@@ -1,4 +1,4 @@
-import { transformToCss } from '../utils/transform-to-css';
+import { transformToCss, transformToCssVariables } from '../utils/transform-to-css';
 import Base from './base';
 import type { StyleInterface, PropMark } from './base';
 
@@ -13,6 +13,15 @@ export default class Border extends Base implements StyleInterface {
 
   exportStyle(): string {
     return transformToCss(
+      Border.colorPropMarks,
+      this.colorValueNames,
+      this.mark,
+      this.prefix,
+    );
+  }
+
+  exportCssVariables(): string {
+    return transformToCssVariables(
       Border.colorPropMarks,
       this.colorValueNames,
       this.mark,

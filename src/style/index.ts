@@ -4,10 +4,12 @@ import Font from './font';
 import Shadow from './shadow';
 import { calcBackgroundColor, calcBorderColor, calcFontColor } from '../utils/calc-color';
 import type { StyleOptions, CommonThemeOpt, Style } from '../index';
+import Base from './base';
 
 export const createStyle = (
   {
     color,
+    placeholderColor,
     backgroundColor,
     borderColor,
     fontColor,
@@ -46,7 +48,10 @@ export const createStyle = (
       color: fontColor || calcFontColor(color, mark),
       colorGroup: fontColorGroup,
       nameMapGroup: [fontColorNameMap, fontSizeNameMap],
-    }, commonThemeOpt.minFontSize, commonThemeOpt.maxFontSize),
+    },
+    commonThemeOpt.minFontSize,
+    commonThemeOpt.maxFontSize,
+    placeholderColor),
     new Shadow({
       ...commonOpts,
       color,
@@ -58,7 +63,11 @@ export const createStyle = (
       const themeStyleWrap = document.head;
       if (themeStyleWrap.querySelector(`[theme-item="${mark}"]`)) return;
       const target = document.createElement('style');
-      target.innerText = styleItems.map((styleItem) => styleItem.exportStyle()).join('');
+      target.innerText = styleItems.map((styleItem) => styleItem.exportStyle()).join('')
+      + (
+        commonThemeOpt.enableCssVariables
+          ? `:root{${styleItems.map((styleItem) => styleItem.exportCssVariables()).join('')}}`
+          : '');
       target.setAttribute('theme-item', mark);
       themeStyleWrap.appendChild(target);
     },

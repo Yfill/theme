@@ -4,6 +4,7 @@ import { arrayFilterEmptyItem } from '../utils/array';
 import type { StyleMark, ColorGroup, NameMap } from '../index';
 
 export type ValueName = [string, string[]]
+
 export type Options = {
   mark: StyleMark,
   color: string,
@@ -14,9 +15,12 @@ export type Options = {
 }
 export interface StyleInterface {
   mark: StyleMark
-  exportStyle: () => string
+  exportStyle: () => string,
+  exportCssVariables: () => string
 }
+
 export type PropMark = [string, string[]]
+
 const defaultMaxLevel = 10;
 export default class Base {
   mark: StyleMark
@@ -35,12 +39,12 @@ export default class Base {
         .map((hasTransparent) => [
           cc(index, hasTransparent),
           arrayFilterEmptyItem([`${index}${hasTransparent ? '-a' : ''}`, nameMap[index]]),
-        ]))
+        ] as ValueName))
       .concat(index === 0 ? [] : [false, true]
         .map((hasTransparent) => [
           cc(-index, hasTransparent),
           arrayFilterEmptyItem([`${-index}${hasTransparent ? '-a' : ''}`, nameMap[-index]]),
-        ])), [])
+        ] as ValueName)), [])
 
   constructor(opt: Options) {
     const maxLevel = Math.max(

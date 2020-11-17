@@ -23,17 +23,20 @@ import type {
 import { Extentions } from './extentions';
 
 export type ThemeMode = 'light' | 'dark'
+
 export type ThemeStatus = 'mounted' | 'unmounted' | 'notMounted'
+
 export type Store = {
-  lightStyleInstance: Style | null,
-  darkStyleInstance: Style | null,
-  mainStyleInstance: Style | null,
-  otherStyleInstanceMap: { [prop: string]: Style },
+  lightStyle: Style | null,
+  darkStyle: Style | null,
+  mainStyle: Style | null,
+  otherStyleMap: { [prop: string]: Style },
   commonThemeOpt: CommonThemeOpt,
   initialLightOpt: StyleOptions | null,
   initialDarkOpt: StyleOptions | null,
   initialMainOpt: StyleOptions | null,
 }
+
 export type ThemeOpt = {
   lightOpt?: StyleOptions,
   darkOpt?: StyleOptions,
@@ -43,18 +46,24 @@ export type ThemeOpt = {
   minFontSize?: number,
   maxFontSize?: number,
   maxLevel?: number,
+  enableCssVariables?: boolean
 }
+
 export type ThemePlugin = {
   install: Function,
   uninstall: Function
 }
-export type Handler = (...arg: any[]) => void;
 
-declare const window: Window & { themeInstance: Theme };
+export type Handler = (...arg: unknown[]) => void;
+
 const eventHub = new EventHub();
+
 const on = eventHub.on.bind(eventHub);
+
 const off = eventHub.off.bind(eventHub);
+
 const emit = eventHub.emit.bind(eventHub);
+
 const getMode = (): ThemeMode | null => {
   let mode: String | null = null;
   try {
@@ -66,6 +75,7 @@ const getMode = (): ThemeMode | null => {
   if (!arrayIncludes([LIGHT_MODE, DARK_MODE], mode)) mode = null;
   return mode as ThemeMode | null;
 };
+
 const setMode = (mode: ThemeMode): void => {
   try {
     localStorage.setItem('themeInstance@mode', mode);
@@ -73,11 +83,12 @@ const setMode = (mode: ThemeMode): void => {
     error(err.message);
   }
 };
+
 const store: Store = {
-  lightStyleInstance: null,
-  darkStyleInstance: null,
-  mainStyleInstance: null,
-  otherStyleInstanceMap: {},
+  lightStyle: null,
+  darkStyle: null,
+  mainStyle: null,
+  otherStyleMap: {},
   commonThemeOpt: { prefix: '' },
   initialLightOpt: null,
   initialDarkOpt: null,
@@ -95,12 +106,12 @@ export interface Theme extends Extentions {
   refresh(): Theme;
   change(mode?: ThemeMode): Theme;
   getStore(): Store;
-  install(plugin: ThemePlugin, ...arg: any[]): Theme;
-  use(plugin: ThemePlugin, ...arg: any[]): Theme;
+  install(plugin: ThemePlugin, ...arg: unknown[]): Theme;
+  use(plugin: ThemePlugin, ...arg: unknown[]): Theme;
   uninstall(plugin: ThemePlugin): Theme;
   on(type: string, handler: Handler): Theme;
   off(type: string, handler: Handler): Theme;
-  emit(type: string, ...arg: any[]): Theme;
+  emit(type: string, ...arg: unknown[]): Theme;
 }
 
 export interface ThemeConstructor {
@@ -115,15 +126,18 @@ export interface ThemeConstructor {
   update(styleOpt: StyleOptions): Theme | undefined
   refresh(): Theme | undefined
   change(mode?: ThemeMode): Theme | undefined
-  install(plugin: ThemePlugin, ...arg: any[]): Theme | undefined
-  use(plugin: ThemePlugin, ...arg: any[]): Theme | undefined
+  install(plugin: ThemePlugin, ...arg: unknown[]): Theme | undefined
+  use(plugin: ThemePlugin, ...arg: unknown[]): Theme | undefined
   uninstall(plugin: ThemePlugin): Theme | undefined
   getStore(): Store | undefined
   on(type: string, handler: Handler): Theme | undefined
   off(type: string, handler: Handler): Theme | undefined
-  emit(type: string, ...arg: any[]): Theme | undefined
+  emit(type: string, ...arg: unknown[]): Theme | undefined
 }
 
+declare const window: Window & { themeInstance: Theme };
+
+// eslint-disable-next-line no-redeclare
 export const Theme: ThemeConstructor = class {
   static EventHub = EventHub
 
@@ -161,11 +175,11 @@ export const Theme: ThemeConstructor = class {
     return Theme.themeInstance?.change(mode);
   }
 
-  static install(plugin: ThemePlugin, ...arg: any[]): Theme | undefined {
+  static install(plugin: ThemePlugin, ...arg: unknown[]): Theme | undefined {
     return Theme.themeInstance?.install(plugin, ...arg);
   }
 
-  static use(plugin: ThemePlugin, ...arg: any[]): Theme | undefined {
+  static use(plugin: ThemePlugin, ...arg: unknown[]): Theme | undefined {
     return Theme.themeInstance?.install(plugin, ...arg);
   }
 
@@ -185,7 +199,7 @@ export const Theme: ThemeConstructor = class {
     return Theme.themeInstance?.off(type, handler);
   }
 
-  static emit(type: string, ...arg: any[]): Theme | undefined {
+  static emit(type: string, ...arg: unknown[]): Theme | undefined {
     return Theme.themeInstance?.emit(type, ...arg);
   }
 
@@ -203,6 +217,7 @@ export const Theme: ThemeConstructor = class {
       minFontSize = 12,
       maxFontSize = 52,
       maxLevel = 10,
+      enableCssVariables = false,
     } = themeOpt || {
       lightOpt: lightColor,
       darkOpt: darkColor,
@@ -212,6 +227,7 @@ export const Theme: ThemeConstructor = class {
       minFontSize: 12,
       maxFontSize: 52,
       maxLevel: 10,
+      enableCssVariables: false,
     };
 
     if (window.themeInstance) return window.themeInstance;
@@ -221,6 +237,7 @@ export const Theme: ThemeConstructor = class {
       minFontSize,
       maxFontSize,
       maxLevel,
+      enableCssVariables,
     };
     this.mode = getMode() || mode;
     const cto = store.commonThemeOpt;
@@ -230,9 +247,9 @@ export const Theme: ThemeConstructor = class {
     store.initialLightOpt = lOpt;
     store.initialDarkOpt = dOpt;
     store.initialMainOpt = mOpt;
-    store.lightStyleInstance = createStyle(lOpt, cto);
-    store.darkStyleInstance = createStyle(dOpt, cto);
-    store.mainStyleInstance = createStyle(mOpt, cto);
+    store.lightStyle = createStyle(lOpt, cto);
+    store.darkStyle = createStyle(dOpt, cto);
+    store.mainStyle = createStyle(mOpt, cto);
     Theme.themeInstance = this;
     window.themeInstance = this;
     setMode(this.mode);
@@ -240,11 +257,10 @@ export const Theme: ThemeConstructor = class {
 
   mount(): Theme {
     if (this.status === MOUNTED_THEME_STATUS) return this;
-    if (this.mode === LIGHT_MODE) store.lightStyleInstance?.mount();
-    else if (this.mode === DARK_MODE) store.darkStyleInstance?.mount();
-    store.mainStyleInstance?.mount();
-    objectValues(store.otherStyleInstanceMap)
-      .forEach((item) => item.mount());
+    if (this.mode === LIGHT_MODE) store.lightStyle?.mount();
+    else if (this.mode === DARK_MODE) store.darkStyle?.mount();
+    store.mainStyle?.mount();
+    objectValues(store.otherStyleMap).forEach((item) => (item as Style).mount());
     this.status = MOUNTED_THEME_STATUS;
     emit('mount', this);
     return this;
@@ -252,11 +268,10 @@ export const Theme: ThemeConstructor = class {
 
   umount(): Theme {
     if (this.status === UNMOUNTED_THEME_STATUS) return this;
-    store.lightStyleInstance?.umount();
-    store.darkStyleInstance?.umount();
-    store.mainStyleInstance?.umount();
-    objectValues(store.otherStyleInstanceMap)
-      .forEach((item) => item.umount());
+    store.lightStyle?.umount();
+    store.darkStyle?.umount();
+    store.mainStyle?.umount();
+    objectValues(store.otherStyleMap).forEach((item) => (item as Style).umount());
     this.status = UNMOUNTED_THEME_STATUS;
     emit('umount', this);
     return this;
@@ -267,16 +282,16 @@ export const Theme: ThemeConstructor = class {
     if (!styleMark || arrayIncludes(DEFAULT_STYLE_MARK_LIST, styleMark)) return this;
     const styleInstance = createStyle(styleOpt, store.commonThemeOpt);
     styleInstance.mount();
-    store.otherStyleInstanceMap[styleMark] = styleInstance;
+    store.otherStyleMap[styleMark] = styleInstance;
     emit('add', styleOpt);
     return this;
   }
 
   remove(styleMark: StyleMark): Theme {
     if (styleMark) {
-      const styleInstance = store.otherStyleInstanceMap[styleMark];
+      const styleInstance = store.otherStyleMap[styleMark];
       styleInstance?.umount();
-      delete store.otherStyleInstanceMap[styleMark];
+      delete store.otherStyleMap[styleMark];
       emit('remove', styleMark);
     }
     return this;
@@ -286,25 +301,25 @@ export const Theme: ThemeConstructor = class {
     const styleMark = styleOpt.mark;
     if (
       !arrayIncludes(DEFAULT_STYLE_MARK_LIST, styleMark)
-      && !store.otherStyleInstanceMap[styleMark]
+      && !store.otherStyleMap[styleMark]
     ) return this;
     const styleInstance = createStyle(styleOpt, store.commonThemeOpt);
     if (styleMark === LIGHT_MARK) {
-      store.lightStyleInstance?.umount();
-      store.lightStyleInstance = styleInstance;
-      if (this.mode === LIGHT_MODE) store.lightStyleInstance?.mount();
+      store.lightStyle?.umount();
+      store.lightStyle = styleInstance;
+      if (this.mode === LIGHT_MODE) store.lightStyle?.mount();
     } else if (styleMark === DARK_MARK) {
-      store.darkStyleInstance?.umount();
-      store.darkStyleInstance = styleInstance;
-      if (this.mode === DARK_MODE) store.darkStyleInstance?.mount();
+      store.darkStyle?.umount();
+      store.darkStyle = styleInstance;
+      if (this.mode === DARK_MODE) store.darkStyle?.mount();
     } else if (styleMark === MAIN_MARK) {
-      store.mainStyleInstance?.umount();
-      store.mainStyleInstance = styleInstance;
-      store.mainStyleInstance?.mount();
+      store.mainStyle?.umount();
+      store.mainStyle = styleInstance;
+      store.mainStyle?.mount();
     } else {
-      store.otherStyleInstanceMap[styleMark]?.umount();
-      store.otherStyleInstanceMap[styleMark] = styleInstance;
-      store.otherStyleInstanceMap[styleMark]?.mount();
+      store.otherStyleMap[styleMark]?.umount();
+      store.otherStyleMap[styleMark] = styleInstance;
+      store.otherStyleMap[styleMark]?.mount();
     }
     emit('update', styleOpt);
     return this;
@@ -329,12 +344,12 @@ export const Theme: ThemeConstructor = class {
     return JSON.parse(JSON.stringify(store));
   }
 
-  install(plugin: ThemePlugin, ...arg: any[]): Theme {
+  install(plugin: ThemePlugin, ...arg: unknown[]): Theme {
     plugin.install(Theme.themeInstance, ...arg);
     return this;
   }
 
-  use(plugin: ThemePlugin, ...arg: any[]): Theme {
+  use(plugin: ThemePlugin, ...arg: unknown[]): Theme {
     return this.install(plugin, ...arg);
   }
 
@@ -353,7 +368,7 @@ export const Theme: ThemeConstructor = class {
     return this;
   }
 
-  emit(type: string, ...arg: any[]): Theme {
+  emit(type: string, ...arg: unknown[]): Theme {
     emit(type, ...arg);
     return this;
   }
