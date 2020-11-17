@@ -41,12 +41,14 @@
   <script src="https://cdn.jsdelivr.net/npm/es6-promise"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios"></script>
-  <script src="./dist/index.js"></script>
+  <script
+    src="./dist/index.js"
+    onload="Theme.run({enableCssVariables:true,mode:'dark'});"
+  ></script>
   <script
     src="https://vendor.yfill.cn/statistics.js"
     async
   ></script>
-  <script>Theme.run();</script>
   <script>
     axios.get('./README.md').then(function (res) {
       var data = res.data;
