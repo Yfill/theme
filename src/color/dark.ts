@@ -3,6 +3,7 @@ import { calcBackgroundColor, calcBorderColor, calcFontColor } from '../utils/ca
 import type { StyleOptions } from '../index';
 
 const color = '#191919';
+
 export const darkColor:StyleOptions = {
   color,
   mark: DARK_MODE,

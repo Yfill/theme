@@ -1,7 +1,8 @@
-export const curry: any = (
+export const curry = (
   fn: Function,
-  ...arg: any
+  ...arg: unknown[]
 ) => (arg.length >= fn.length
   ? fn(...arg)
-  : (...params: any) => curry(fn, ...arg, ...params));
+  : (...params: unknown[]) => curry(fn, ...arg, ...params));
+
 export default { curry };

@@ -16,6 +16,7 @@ export const addStyleMarkToPropMarks = (
     return [prop, marks.map((mark) => `${mark}-${styleMark}`)];
   });
 };
+
 export default {
   addStyleMarkToPropMarks,
 };

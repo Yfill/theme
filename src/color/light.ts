@@ -3,7 +3,8 @@ import { calcBackgroundColor, calcBorderColor, calcFontColor } from '../utils/ca
 import type { StyleOptions } from '../index';
 
 const color = '#ffffff';
-export const lightColor:StyleOptions = {
+
+export const lightColor: StyleOptions = {
   color,
   mark: LIGHT_MODE,
   backgroundColor: calcBackgroundColor(color, LIGHT_MODE),
