@@ -57,7 +57,7 @@ yarn add @yfill/theme
   class="item"
   font-size-12
   background-color-1
-  box-shadow-2
+  box-shadow-0
   border-color--4-a
   font-size-52-hover
   font-color-main-0-hover
@@ -71,7 +71,7 @@ yarn add @yfill/theme
   class="item"
   font-size-12
   background-color-1
-  box-shadow-2
+  box-shadow-0
   border-color--4-a
 >
   font12
