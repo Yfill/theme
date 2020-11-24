@@ -64,6 +64,10 @@ const off = eventHub.off.bind(eventHub);
 
 const emit = eventHub.emit.bind(eventHub);
 
+const addMarkToRoot = (attr: string, value: string) => {
+  document.documentElement.setAttribute(attr, value);
+};
+
 const getMode = (): ThemeMode | null => {
   let mode: String | null = null;
   try {
@@ -77,6 +81,7 @@ const getMode = (): ThemeMode | null => {
 };
 
 const setMode = (mode: ThemeMode): void => {
+  addMarkToRoot('theme-mode', mode);
   try {
     localStorage.setItem('themeInstance@mode', mode);
   } catch (err) {
@@ -117,7 +122,7 @@ export interface Theme extends Extentions {
 export interface ThemeConstructor {
   new(themeOpt?: ThemeOpt): Theme
   EventHub: typeof EventHub
-  themeInstance: Theme | null
+  instance: Theme | null
   run(themeOpt?: ThemeOpt): Theme
   mount(): Theme | undefined
   umount(): Theme | undefined
@@ -141,66 +146,66 @@ declare const window: Window & { themeInstance: Theme };
 export const Theme: ThemeConstructor = class {
   static EventHub = EventHub
 
-  static themeInstance: Theme | null = null
+  static instance: Theme | null = null
 
   static run(themeOpt?: ThemeOpt): Theme {
     return new Theme(themeOpt).mount();
   }
 
   static mount(): Theme | undefined {
-    return Theme.themeInstance?.mount();
+    return Theme.instance?.mount();
   }
 
   static umount(): Theme | undefined {
-    return Theme.themeInstance?.umount();
+    return Theme.instance?.umount();
   }
 
   static add(styleOpt: StyleOptions): Theme | undefined {
-    return Theme.themeInstance?.add(styleOpt);
+    return Theme.instance?.add(styleOpt);
   }
 
   static remove(styleMark: StyleMark): Theme | undefined {
-    return Theme.themeInstance?.remove(styleMark);
+    return Theme.instance?.remove(styleMark);
   }
 
   static update(styleOpt: StyleOptions): Theme | undefined {
-    return Theme.themeInstance?.update(styleOpt);
+    return Theme.instance?.update(styleOpt);
   }
 
   static refresh(): Theme | undefined {
-    return Theme.themeInstance?.refresh();
+    return Theme.instance?.refresh();
   }
 
   static change(mode?: ThemeMode): Theme | undefined {
-    return Theme.themeInstance?.change(mode);
+    return Theme.instance?.change(mode);
   }
 
   static install(plugin: ThemePlugin, ...arg: unknown[]): Theme | undefined {
-    return Theme.themeInstance?.install(plugin, ...arg);
+    return Theme.instance?.install(plugin, ...arg);
   }
 
   static use(plugin: ThemePlugin, ...arg: unknown[]): Theme | undefined {
-    return Theme.themeInstance?.install(plugin, ...arg);
+    return Theme.instance?.install(plugin, ...arg);
   }
 
   static uninstall(plugin: ThemePlugin): Theme | undefined {
-    return Theme.themeInstance?.uninstall(plugin);
+    return Theme.instance?.uninstall(plugin);
   }
 
   static getStore(): Store | undefined {
-    return Theme.themeInstance?.getStore();
+    return Theme.instance?.getStore();
   }
 
   static on(type: string, handler: Handler): Theme | undefined {
-    return Theme.themeInstance?.on(type, handler);
+    return Theme.instance?.on(type, handler);
   }
 
   static off(type: string, handler: Handler): Theme | undefined {
-    return Theme.themeInstance?.off(type, handler);
+    return Theme.instance?.off(type, handler);
   }
 
   static emit(type: string, ...arg: unknown[]): Theme | undefined {
-    return Theme.themeInstance?.emit(type, ...arg);
+    return Theme.instance?.emit(type, ...arg);
   }
 
   mode: ThemeMode = LIGHT_MODE
@@ -250,7 +255,7 @@ export const Theme: ThemeConstructor = class {
     store.lightStyle = createStyle(lOpt, cto);
     store.darkStyle = createStyle(dOpt, cto);
     store.mainStyle = createStyle(mOpt, cto);
-    Theme.themeInstance = this;
+    Theme.instance = this;
     window.themeInstance = this;
     setMode(this.mode);
   }
@@ -345,7 +350,7 @@ export const Theme: ThemeConstructor = class {
   }
 
   install(plugin: ThemePlugin, ...arg: unknown[]): Theme {
-    plugin.install(Theme.themeInstance, ...arg);
+    plugin.install(Theme.instance, ...arg);
     return this;
   }
 
@@ -354,7 +359,7 @@ export const Theme: ThemeConstructor = class {
   }
 
   uninstall(plugin: ThemePlugin): Theme {
-    plugin.uninstall(Theme.themeInstance);
+    plugin.uninstall(Theme.instance);
     return this;
   }
 
