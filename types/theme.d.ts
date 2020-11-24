@@ -52,7 +52,7 @@ export interface Theme extends Extentions {
 export interface ThemeConstructor {
     new (themeOpt?: ThemeOpt): Theme;
     EventHub: typeof EventHub;
-    themeInstance: Theme | null;
+    instance: Theme | null;
     run(themeOpt?: ThemeOpt): Theme;
     mount(): Theme | undefined;
     umount(): Theme | undefined;
