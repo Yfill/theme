@@ -1,5 +1,5 @@
 import EventHub from '@yfill/event-hub';
-import { createStyle } from './style/index';
+import { createStyle } from './style';
 import lightColor from './color/light';
 import darkColor from './color/dark';
 import mainColor from './color/main';
@@ -14,7 +14,7 @@ import {
   NOT_MOUNTED_THEME_STATUS,
   MOUNTED_THEME_STATUS,
   UNMOUNTED_THEME_STATUS,
-} from './constant/index';
+} from './constant';
 import { objectValues } from './utils/object';
 import { error, warn } from './utils/log';
 import type {
@@ -246,9 +246,15 @@ export const Theme: ThemeConstructor = class {
     };
     this.mode = getMode() || mode;
     const cto = store.commonThemeOpt;
-    const lOpt = { ...lightColor, ...lightOpt, mark: LIGHT_MARK };
-    const dOpt = { ...darkColor, ...darkOpt, mark: DARK_MARK };
-    const mOpt = { ...mainColor, ...mainOpt, mark: MAIN_MARK };
+    const lOpt = {
+      ...(lightOpt || lightColor), color: lightOpt?.color || lightColor.color, mark: LIGHT_MARK,
+    };
+    const dOpt = {
+      ...(darkOpt || darkColor), color: darkOpt?.color || darkColor.color, mark: DARK_MARK,
+    };
+    const mOpt = {
+      ...(mainOpt || mainColor), color: mainOpt?.color || mainColor.color, mark: MAIN_MARK,
+    };
     store.initialLightOpt = lOpt;
     store.initialDarkOpt = dOpt;
     store.initialMainOpt = mOpt;
