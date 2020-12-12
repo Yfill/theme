@@ -1,5 +1,5 @@
 import type { ColorGroup, StyleMark } from '../index';
-import { DARK_MARK, LIGHT_MARK } from '../constant/index';
+import { DARK_MARK, LIGHT_MARK } from '../constant';
 import { arrayIncludes } from './array';
 
 const checkHexColor = (color: string) => {

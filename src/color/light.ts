@@ -1,4 +1,4 @@
-import { LIGHT_MODE } from '../constant/index';
+import { LIGHT_MODE } from '../constant';
 import { calcBackgroundColor, calcBorderColor, calcFontColor } from '../utils/calc-color';
 import type { StyleOptions } from '../index';
 

@@ -1,4 +1,4 @@
-import { LIGHT_MARK, DARK_MARK } from '../constant/index';
+import { LIGHT_MARK, DARK_MARK } from '../constant';
 import { arrayIncludes } from './array';
 import type { StyleMark } from '../index';
 import type { PropMark } from '../style/base';

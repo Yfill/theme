@@ -1,5 +1,5 @@
 import { transformToCss, transformToCssVariables } from '../utils/transform-to-css';
-import { LIGHT_MARK, DARK_MARK } from '../constant/index';
+import { LIGHT_MARK, DARK_MARK } from '../constant';
 import { arrayFilterEmptyItem, arrayIncludes } from '../utils/array';
 import { hexDarken, hexBrighten } from '../utils/calc-color';
 import Base from './base';

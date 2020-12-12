@@ -2,7 +2,7 @@ import Base from './base';
 import { hexDimming } from '../utils/calc-color';
 import { curry } from '../utils/curry';
 import { transformToCss, transformToCssVariables } from '../utils/transform-to-css';
-import { DARK_MARK, LIGHT_MARK } from '../constant/index';
+import { DARK_MARK, LIGHT_MARK } from '../constant';
 import { arrayFilterEmptyItem, arrayIncludes } from '../utils/array';
 import type {
   StyleInterface, PropMark, ValueName, Options,

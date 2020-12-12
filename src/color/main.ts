@@ -1,4 +1,4 @@
-import { MAIN_MARK } from '../constant/index';
+import { MAIN_MARK } from '../constant';
 import { calcBackgroundColor, calcBorderColor, calcFontColor } from '../utils/calc-color';
 import type { StyleOptions } from '../index';
 
