@@ -103,6 +103,7 @@ const store: Store = {
 export interface Theme extends Extentions {
   mode: ThemeMode
   status: ThemeStatus
+  storageHandler(): void;
   mount(): Theme;
   umount(): Theme;
   add(styleOpt: StyleOptions): Theme;
@@ -262,8 +263,13 @@ export const Theme: ThemeConstructor = class {
     store.darkStyle = createStyle(dOpt, cto);
     store.mainStyle = createStyle(mOpt, cto);
     Theme.instance = this;
-    window.themeInstance = this;
     setMode(this.mode);
+    window.themeInstance = this;
+  }
+
+  storageHandler(): void {
+    const currentMode = getMode();
+    if (currentMode) this.change(currentMode);
   }
 
   mount(): Theme {
@@ -274,6 +280,7 @@ export const Theme: ThemeConstructor = class {
     objectValues(store.otherStyleMap).forEach((item) => (item as Style).mount());
     this.status = MOUNTED_THEME_STATUS;
     emit('mount', this);
+    window.addEventListener('storage', this.storageHandler);
     return this;
   }
 
@@ -285,6 +292,7 @@ export const Theme: ThemeConstructor = class {
     objectValues(store.otherStyleMap).forEach((item) => (item as Style).umount());
     this.status = UNMOUNTED_THEME_STATUS;
     emit('umount', this);
+    window.removeEventListener('storage', this.storageHandler);
     return this;
   }
 
