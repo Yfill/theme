@@ -34,6 +34,7 @@ export declare type Handler = (...arg: unknown[]) => void;
 export interface Theme extends Extentions {
     mode: ThemeMode;
     status: ThemeStatus;
+    storageHandler(): void;
     mount(): Theme;
     umount(): Theme;
     add(styleOpt: StyleOptions): Theme;
