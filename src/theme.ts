@@ -269,7 +269,7 @@ export const Theme: ThemeConstructor = class {
 
   storageHandler(): void {
     const currentMode = getMode();
-    if (currentMode) this.change(currentMode);
+    if (currentMode) Theme.change(currentMode);
   }
 
   mount(): Theme {
