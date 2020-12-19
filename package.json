@@ -38,6 +38,7 @@
     "serve": "set NODE_ENV=development&& rollup -c&& node serve",
     "lint": "eslint --fix src/**/*.ts"
   },
+  "sideEffects": false,
   "browserslist": [
     "ie 9",
     "chrome 49",
