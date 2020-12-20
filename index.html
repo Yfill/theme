@@ -29,19 +29,26 @@
 >
   <script src="https://yfill.cn/docs/common/js/body.js"></script>
   <h2>Example effect</h2>
+  <style>
+    .variable {
+      background-color: var(--background-color-1);
+    }
+
+    .variable:hover {
+      color: var(--font-color-main-0);
+    }
+  </style>
   <div
-    class="item"
+    class="item variable"
     font-size-12
-    background-color-1
     box-shadow-0
     border-color--4-a
     font-size-52-hover
-    font-color-main-0-hover
     background-color-2-hover
     box-shadow-main-0-hover
     border-color-main-1-hover
   >
-    Content
+    content
   </div>
   <div
     class="item"
