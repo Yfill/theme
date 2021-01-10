@@ -10,5 +10,6 @@ export const lightColor: StyleOptions = {
   backgroundColor: calcBackgroundColor(color, LIGHT_MODE),
   borderColor: calcBorderColor(color, LIGHT_MODE),
   fontColor: calcFontColor(color, LIGHT_MODE),
+  backgroundColorGroup: ['#ffffff', '#f2f2f2', '#ededed', '#ebebeb', '#e8e8e8', '#e3e3e3', '#e0e0e0', '#dbdbdb', '#d9d9d9', '#d6d6d6'],
 };
 export default lightColor;
